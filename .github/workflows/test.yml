@@ -36,7 +36,7 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: Integration testing
       run: |
-        yarn test
+        yarn test:beforePush
       env:
         DB_PORT: 5432
         DB_HOST: localhost
