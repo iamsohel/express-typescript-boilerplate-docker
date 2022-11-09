@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-      - run: npm ci
+      - run: yarn install
       - name: Build the docker-compose stack
         run: docker-compose -f docker-compose.test.yml up -d 
       - name: Check running containers
