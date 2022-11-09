@@ -1,0 +1,27 @@
+name: testing
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test_pull_request:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: dbname
+      DB_USER: dbuser
+      DB_PASS: dbpassword
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - run: npm ci
+      - name: Build the docker-compose stack
+        run: docker-compose -f docker-compose.test.yml up -d 
+      - name: Check running containers
+        run: docker ps -a
+      - name: Run tests
+        run: sleep 5 && npm run test
