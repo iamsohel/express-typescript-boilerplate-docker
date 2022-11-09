@@ -14,7 +14,6 @@ const config: DataSourceOptions = {
   subscribers: ['src/subscriber/**/*.ts', 'dist/subscriber/**/*.js'],
 };
 
-console.log(config);
 const AppDataSource = new DataSource(config);
 
 export { AppDataSource, config };

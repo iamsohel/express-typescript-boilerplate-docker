@@ -12,8 +12,8 @@
     "format": "eslint src/**/*.ts --fix",
     "pretty": "prettier --write \"src/**/*.ts\"",
     "prepare": "husky install",
-    "test": "jest --watchAll --no-cache --detectOpenHandles",
-    "test:beforePush": "jest --no-cache",
+    "test:dev": "jest --watchAll --no-cache --detectOpenHandles",
+    "test": "jest --no-cache --detectOpenHandles",
     "pre-commit": "lint-staged"
   },
   "jest": {

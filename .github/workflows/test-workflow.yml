@@ -1,27 +1,45 @@
-name: testing
+name: run testing
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main, dev]
 
 jobs:
-  test_pull_request:
+  test:
     runs-on: ubuntu-latest
-    env:
-      DB_HOST: localhost
-      DB_NAME: dbname
-      DB_USER: dbuser
-      DB_PASS: dbpassword
-
+    strategy:
+      matrix:
+        node-version: [16.x]
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - run: yarn install
-      - name: Build the docker-compose stack
-        run: docker-compose -f docker-compose.test.yml up -d 
-      - name: Check running containers
-        run: docker ps -a
-      - name: Run tests
-        run: sleep 5 && npm run test
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
+    - name: run testing
+      run: |
+        yarn test
+      env:
+        DB_PORT: 5432
+        DB_HOST: localhost
+        DB_NAME: test_db
+        DB_USER: test_user
+        DB_PASSWORD: test_password
