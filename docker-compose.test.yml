@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-  postgres-database:
+  postgres_database:
     image: postgres
-    container_name: pg-database
+    container_name: pg-databases
     environment:
-      - DB_USER=dbuser
-      - DB_PASSWORD=dbpassword
-      - DB_NAME=dbname
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test_dev  
 
     volumes:
       - database-volume:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - '5433:5432'
     restart: on-failure
 
 volumes:

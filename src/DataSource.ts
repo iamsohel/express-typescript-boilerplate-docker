@@ -6,13 +6,15 @@ const config: DataSourceOptions = {
   password: Config.password,
   database: Config.database,
   type: 'postgres',
-  port: 5432,
+  port: parseInt(Config.db_port),
   logging: false,
   synchronize: true,
   entities: process.env.NODE_ENV === 'development' || 'test' ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
   migrations: process.env.NODE_ENV === 'development' ? ['src/migration/**/*.ts'] : ['dist/migration/**/*.js'],
   subscribers: ['src/subscriber/**/*.ts', 'dist/subscriber/**/*.js'],
 };
+
+console.log(config);
 const AppDataSource = new DataSource(config);
 
 export { AppDataSource, config };
