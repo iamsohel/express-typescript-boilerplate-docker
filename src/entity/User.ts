@@ -1,5 +1,7 @@
 import { Entity, Column, OneToOne, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
 import { Length, IsEmail, IsNotEmpty, IsInt, Min, Max } from 'class-validator';
+import jwt from 'jsonwebtoken';
+import { JwtPayload } from '../types/JwtPayload';
 import bcrypt from 'bcrypt';
 import { Base } from './Base';
 
@@ -31,5 +33,11 @@ export class User extends Base {
 
   async checkPasswordMatch(unEncryptedPassword: string) {
     return await bcrypt.compare(unEncryptedPassword, this.password);
+  }
+
+  createJwtToken(payload: JwtPayload) {
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRATION,
+    });
   }
 }

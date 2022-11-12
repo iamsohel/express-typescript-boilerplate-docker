@@ -7,14 +7,13 @@ import { User } from '../dto/auth/user';
 export default class AuthController {
   constructor(public userService: UserService) {}
 
-  // signIn = async (req: Request) => {
-  //   const { email, password } = req.body;
-  //   const response = await this.userService.signIn(email, password);
-  // };
+  signIn = async (req: Request, res: Response) => {
+    const token: string = await this.userService.signIn(req.body);
+    res.successResponse({ token: token });
+  };
 
   signUp = async (req: Request, res: Response): Promise<void> => {
-    const { email, first_name, last_name, password } = req.body;
-    const response: User = await this.userService.signUp(email, first_name, last_name, password);
+    const response: User = await this.userService.signUp(req.body);
     res.successResponse(response);
   };
 

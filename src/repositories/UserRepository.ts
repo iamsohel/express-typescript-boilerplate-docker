@@ -1,16 +1,16 @@
 import { User } from '../entity/User';
+import { User as UserInterface } from '../dto/auth/user';
 import { Service } from 'typedi';
 import { AppDataSource } from '../DataSource';
 @Service()
 export default class UserRepository {
   userRepo = AppDataSource.getRepository(User);
-  // constructor(public userRepository: AppDataSource.getRepository(User)){}
-  createUser = async (first_name: string, last_name: string, email: string, password: string): Promise<User> => {
+  createUser = async (userData: UserInterface): Promise<User> => {
     const user = new User();
-    user.email = email;
-    user.first_name = first_name;
-    user.last_name = last_name;
-    user.password = password;
+    user.email = userData.email;
+    user.first_name = userData.first_name;
+    user.last_name = userData.last_name;
+    user.password = userData.password;
     await user.hashPassword();
     await this.userRepo.save(user);
     return user;

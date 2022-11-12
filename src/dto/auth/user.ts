@@ -1,5 +1,31 @@
 import { Exclude, Expose } from 'class-transformer';
 
+import { IsEmail, IsNotEmpty } from 'class-validator';
+
+export class SignUpDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+
+  @IsNotEmpty()
+  first_name: string;
+
+  @IsNotEmpty()
+  last_name: string;
+}
+
+export class SignInDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
+
 @Exclude()
 export class UserDto {
   @Expose()
@@ -27,4 +53,10 @@ export interface User {
   email: string;
 
   password?: string;
+}
+
+export interface UserSingIn {
+  email: string;
+
+  password: string;
 }

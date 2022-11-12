@@ -1,36 +1,44 @@
 import { BadRequestError } from '../utils/response/errors/bad-request-error';
 import { Service } from 'typedi';
 import UserRepository from '../repositories/UserRepository';
-import { UserDto } from '../dto/auth/user';
-import { plainToClass, classToPlain } from 'class-transformer';
+import { UserDto, User as UserInterface, UserSingIn } from '../dto/auth/user';
+import { User } from '../entity/User';
+import { plainToClass } from 'class-transformer';
+import { NotFoundError } from '../utils/response/errors/not-found-error';
+import { JwtPayload } from '../types/JwtPayload';
 
 @Service()
 export default class UserService {
   constructor(public userRepository: UserRepository) {}
 
-  signUp = async (email: string, first_name: string, last_name: string, password: string): Promise<UserDto> => {
-    const user = await this.userRepository.findByEmail(email);
+  signUp = async (data: UserInterface): Promise<UserDto> => {
+    const user = await this.userRepository.findByEmail(data.email);
     if (user) {
       throw new BadRequestError('this email is already registered');
     }
 
-    const result = await this.userRepository.createUser(first_name, last_name, email, password);
+    const result = await this.userRepository.createUser(data);
     return plainToClass(UserDto, result);
-    // let userData = { id: result.id, first_name: result.first_name, last_name: result.last_name, email: result.email}
-    // return userData;
   };
 
-  // signIn = async (email: string, password: string) => {
-  //   this.logger.info(`Email of the registered user is ${email}`);
-  //   const userWithEmail: User | null = await this.userRepository.findByEmail(email);
-  //   if (!userWithEmail) {
-  //     throw new ApplicationError('No User found with this email');
-  //   }
-  //   if (userWithEmail.password.toString() !== password) {
-  //     throw new ApplicationError('Password did not match');
-  //   }
-  //   return 'Successfully Signed In';
-  // };
+  signIn = async (singInData: UserSingIn) => {
+    const user: User | null = await this.userRepository.findByEmail(singInData.email);
+    if (!user) {
+      throw new NotFoundError('wrong credentials');
+    }
+    if (!user.checkPasswordMatch(singInData.password)) {
+      throw new BadRequestError('wrong credentials');
+    }
+    const jwtPayload: JwtPayload = {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+    };
+
+    const token = user.createJwtToken(jwtPayload);
+    return token;
+  };
 
   // getAllUsers = async () => {
   //   return await this.userRepository.getAllUsers();
