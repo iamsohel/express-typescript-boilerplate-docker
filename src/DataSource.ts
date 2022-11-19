@@ -8,7 +8,6 @@ const config: DataSourceOptions = {
   type: 'postgres',
   port: parseInt(Config.db_port),
   logging: false,
-  ssl: { rejectUnauthorized: false },
   synchronize: process.env.NODE_ENV === 'production' ? false : true,
   entities: process.env.NODE_ENV === 'development' || 'test' ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
   migrations: process.env.NODE_ENV === 'development' ? ['src/migration/**/*.ts'] : ['dist/migration/**/*.js'],
