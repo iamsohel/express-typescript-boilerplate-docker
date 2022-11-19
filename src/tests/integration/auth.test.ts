@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { User } from '../../entity/User';
-import { AppDataSource } from '../../DataSource';
+import AppDataSource from '../../DataSource';
 
 const userRepo = AppDataSource.getRepository(User);
 

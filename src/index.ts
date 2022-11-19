@@ -2,7 +2,7 @@ import ErrorHandler from './middlewares/ErrorHandler';
 import Config from './config/Config';
 import http from 'http';
 import { AppLogger } from './utils/Logger';
-import { AppDataSource } from './DataSource';
+import AppDataSource from './DataSource';
 import { app } from './app';
 const PORT = Config.port || 4000;
 

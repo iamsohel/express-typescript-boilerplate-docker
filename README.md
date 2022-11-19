@@ -78,6 +78,13 @@ DB_PASSWORD = dbpassword;
 
 If you want to change or update any code you can just make the change and from the console you will see that the server is getting updated.
 
+
+### Run migration in docker
+
+```sh
+  docker-compose exec comm-tool-api npm run migration:create src/database/migration/user
+```
+
 ### Run without docker
 
 If you don't use Docker then you will get an exception specifying you don't have any database.
