@@ -1,7 +1,7 @@
 import { User } from '../entity/User';
 import { User as UserInterface } from '../dto/auth/user';
 import { Service } from 'typedi';
-import { AppDataSource } from '../DataSource';
+import AppDataSource from '../DataSource';
 @Service()
 export default class UserRepository {
   userRepo = AppDataSource.getRepository(User);
