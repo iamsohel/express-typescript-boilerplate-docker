@@ -14,7 +14,7 @@ const startServer = async () => {
       AppLogger.info(`🚀 sever is running on port ${PORT}`);
     });
   } catch (error: unknown) {
-    if (error instanceof Error) AppLogger.error(`Error occurred: ${error.message}`);
+    if (error instanceof Error) AppLogger.error(`Error occurr: ${error.message}`);
   }
 };
 
