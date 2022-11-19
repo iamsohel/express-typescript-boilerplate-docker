@@ -24,9 +24,10 @@ export default class UserService {
   signIn = async (singInData: UserSingIn) => {
     const user: User | null = await this.userRepository.findByEmail(singInData.email);
     if (!user) {
-      throw new NotFoundError('wrong credentials');
+      throw new BadRequestError('wrong credentials');
     }
-    if (!user.checkPasswordMatch(singInData.password)) {
+    const validPassword = await user.checkPasswordMatch(singInData.password);
+    if (!validPassword) {
       throw new BadRequestError('wrong credentials');
     }
     const jwtPayload: JwtPayload = {

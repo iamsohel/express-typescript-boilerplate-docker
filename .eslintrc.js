@@ -8,20 +8,17 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   plugins: ['prettier', 'jest'],
-  extends: [
-    "plugin:@typescript-eslint/recommended"
-  ],
-  parserOptions: { "sourceType": "module", "ecmaVersion": "latest" },
+  extends: ['plugin:@typescript-eslint/recommended'],
+  parserOptions: { sourceType: 'module', ecmaVersion: 'latest' },
   ignorePatterns: [],
   rules: {
     'prettier/prettier': [
       'warn',
       {
         singleQuote: true,
-        trailingComma: 'all',
         printWidth: 120,
         tabWidth: 2,
-        semi: true
+        semi: true,
       },
     ],
     'no-template-curly-in-string': 0,
@@ -49,6 +46,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars-experimental': 'off',
     'no-unused-vars': 'off',
     'no-control-regex': 0,
-    "import/prefer-default-export": "off",
+    'import/prefer-default-export': 'off',
   },
 };

@@ -10,7 +10,7 @@ beforeAll(async () => {
   await userRepo.clear();
 });
 
-it('should test', async () => {
+it('should success', async () => {
   await request(app).get('/api/v1/auth/test').expect(200);
 });
 
@@ -31,6 +31,20 @@ it('should register successfully', async () => {
     .expect(200);
 });
 
+it('should login successfully', async () => {
+  const email = 'teds2t2@test.com';
+  const password = 'password';
+
+  const response = await request(app)
+    .post('/api/v1/auth/sign-in')
+    .send({
+      email,
+      password,
+    })
+    .expect(200);
+});
+
 afterAll(async () => {
   await userRepo.clear();
+  await AppDataSource.destroy();
 });

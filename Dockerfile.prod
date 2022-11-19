@@ -1,12 +1,16 @@
-FROM node:lts-alpine
+FROM node:18-alpine
+
+RUN addgroup app && adduser -S -G app app
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --only=production
+RUN yarn ci --only=production
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
+
+CMD ["yarn", "run", "start:prod"]
 

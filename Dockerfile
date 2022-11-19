@@ -1,15 +1,15 @@
-FROM node:17.8.0-alpine
+FROM node:18-alpine
 
-WORKDIR /usr/src/app
+RUN addgroup app && adduser -S -G app app
+
+WORKDIR /app
 
 COPY package*.json ./
+COPY yarn.lock ./
+COPY tsconfig.json ./
 
-RUN npm install
+RUN yarn install
 
 COPY . .
 
-EXPOSE 4000
-
-RUN npm run build
-
-CMD [ "node", "dist/src/index.js" ]
+CMD [ "npm", "run", "dev" ]
